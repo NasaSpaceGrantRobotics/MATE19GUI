@@ -1,5 +1,4 @@
-from lxml import etree
-
+#the indices of values from joy message:
 #index number of / joy.buttons:
 #0 - A
 #1 - B
@@ -22,15 +21,27 @@ from lxml import etree
 #5 - RT
 #6 - cross key left / right
 #7 - cross key up / down
+from lxml import etree
 
 class ControlScheme:
     def __init__(self):
+        # this will contain an 2D array of different control schemes where the nth control scheme will be designated from
+        # axesTarget[n] and the target for the mth index axis will be axesTarget[n][m]
         self.axesTarget = []
         self.buttonsTarget = []
+
+        # Dictionary created whenever a joy message is received that matches a target control designated by the ControlScheme
+        # with a value from the joy message
         self.targetControls = {}
+
+        # Array of all of the different ControlScheme files to be parsed
         self.XMLfileNames = ["ControlScheme.xml"]
         self.index = 0
 
+    # Parses all of the xml files with names in the XMLfileNames array and creates an array of axes and buttons to append
+    # to the axesTarget and buttonsTarget arrays respectively
+    # This is done so that all of the xml files can be read in at the same time and switching between them can be done by
+    # switching the index
     def parseXML(self):
         for fileName in self.XMLfileNames:
             tree = etree.parse(fileName)
@@ -48,6 +59,7 @@ class ControlScheme:
             self.axesTarget.append(axes)
             self.buttonsTarget.append(buttons)
 
+    # Populates the dictionary of targetControls by matching the incoming values with the designated targets
     def interpretJoyMsg(self, axes_values, buttons_values):
         for i in range(len(axes_values)):
             if(not self.axesTarget[self.index][i] == None):
@@ -56,8 +68,11 @@ class ControlScheme:
         for i in range(len(buttons_values)):
             if(not self.buttonsTarget[self.index][i] == None):
                 self.targetControls[self.buttonsTarget[self.index][i]] = buttons_values[i]
+
+        #results are printed for the sake of debugging
         print(self.targetControls)
         print("\n\n\n")
 
+    #changes the index of control schemes
     def setIndex(self, n):
         self.index = n
