@@ -22,6 +22,9 @@
 #6 - cross key left / right
 #7 - cross key up / down
 from lxml import etree
+import rospy
+from geometry_msgs.msg import Twist
+
 
 class ControlScheme:
     def __init__(self):
@@ -35,8 +38,11 @@ class ControlScheme:
         self.targetControls = {}
 
         # Array of all of the different ControlScheme files to be parsed
-        self.XMLfileNames = ["ControlScheme.xml"]
+        self.XMLfileNames = ["sample_control.xml","ControlScheme.xml"]
         self.index = 0
+
+        #rospy.init_node('ControlOutput', anonymous=True)
+        self.publisher = rospy.Publisher('ControlOutput', Twist, queue_size=10)
 
     # Parses all of the xml files with names in the XMLfileNames array and creates an array of axes and buttons to append
     # to the axesTarget and buttonsTarget arrays respectively
@@ -69,10 +75,18 @@ class ControlScheme:
             if(not self.buttonsTarget[self.index][i] == None):
                 self.targetControls[self.buttonsTarget[self.index][i]] = buttons_values[i]
 
-        #results are printed for the sake of debugging
-        print(self.targetControls)
-        print("\n\n\n")
-
     #changes the index of control schemes
     def setIndex(self, n):
         self.index = n
+
+    def sendTwistMessage(self):
+        msg = Twist()
+        msg.linear.x = self.targetControls["linear_x"]
+        msg.linear.y = self.targetControls["linear_y"]
+        msg.linear.z = self.targetControls["linear_z"]
+        msg.angular.x = self.targetControls["angular_x"]
+        msg.angular.y = self.targetControls["angular_y"]
+        msg.angular.z = self.targetControls["angular_z"]
+
+        while not rospy.is_shutdown():
+            self.publisher.publish(msg)
