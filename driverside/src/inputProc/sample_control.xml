@@ -24,21 +24,23 @@
 -->
 
 <ControlScheme>
-    <button target="A" index="0"/>
-    <button target="B" index="1"/>
-    <button target="X" index="2"/>
-    <button target="Y" index="3"/>
-    <button target="LB" index="4"/>
-    <button target="RB" index="5"/>
-    <button target="back" index="6"/>
-    <button target="start" index="7"/>
+    <button target="light" name="A"/>
+    <button target="B" name="B"/>
+    <button target="X" name="X"/>
+    <button target="Y" name="Y"/>
+    <button target="LB" name="LB"/>
+    <button target="RB" name="RB"/>
+    <button target="Back" name="Back"/>
+    <button target="Start" name="Start"/>
+    <button target="LeftStick" name = "LeftStick"/>
+    <button target="RightStick" name = "RightStick"/>
 
-    <axis target="linear_x" index="0"/>
-    <axis target="linear_y" index="1"/>
-    <axis target="linear_z" index="2"/>
-    <axis target="angular_x" index="3"/>
-    <axis target="angular_y" index="4"/>
-    <axis target="angular_z" index="5"/>
-    <axis target="LR Dpad" index="6"/>
-    <axis target="UD Dpad" index="7"/>
+    <axis target="linear_x" index="LeftStickX"/>
+    <axis target="linear_y" index="LeftStickY"/>
+    <axis target="linear_z" index="LeftTrigger"/>
+    <axis target="angular_x" index="RightStickX"/>
+    <axis target="angular_y" index="RightStickY"/>
+    <axis target="angular_z" index="RightTrigger"/>
+    <axis target="LR Dpad" index="DpadX"/>
+    <axis target="UD Dpad" index="DpadY"/>
 </ControlScheme>

@@ -33,6 +33,30 @@ class ControlScheme:
         self.axesTarget = []
         self.buttonsTarget = []
 
+        self.buttonNames = {
+            "A": 0,
+            "B": 1,
+            "X": 2,
+            "Y": 3,
+            "LB": 4,
+            "RB": 5,
+            "Back": 6,
+            "Start": 7,
+            "LeftStick": 8,
+            "RightStick": 9
+
+        }
+        self.axesNames = {
+            "LeftStickX": 0,
+            "LeftStickY": 1,
+            "LeftTrigger": 2,
+            "RightStickX": 3,
+            "RightStickY": 4,
+            "RightTrigger": 5,
+            "DpadX": 6,
+            "DpadY": 7
+        }
+
         # Dictionary created whenever a joy message is received that matches a target control designated by the ControlScheme
         # with a value from the joy message
         self.targetControls = {}
@@ -43,6 +67,8 @@ class ControlScheme:
 
         #rospy.init_node('ControlOutput', anonymous=True)
         self.publisher = rospy.Publisher('ControlOutput', Twist, queue_size=10)
+
+        self.togglePublisher = rospy.Publisher('Toggle', int, queue_size = 10)
 
     # Parses all of the xml files with names in the XMLfileNames array and creates an array of axes and buttons to append
     # to the axesTarget and buttonsTarget arrays respectively
@@ -57,10 +83,10 @@ class ControlScheme:
             buttons = [None]*11
 
             for axis in root.findall("axis"):
-                axes[int(axis.get("index"))] = axis.get("target")
+                axes[axesNames[axis.get("name")]] = axis.get("target")
 
             for button in root.findall("button"):
-                buttons[int(button.get("index"))] = button.get("target")
+                buttons[buttonNames[button.get("name")]] = button.get("target")
 
             self.axesTarget.append(axes)
             self.buttonsTarget.append(buttons)
@@ -90,3 +116,9 @@ class ControlScheme:
 
         while not rospy.is_shutdown():
             self.publisher.publish(msg)
+
+    def sendToggleMessage(self):
+        msg = self.targetControls["light"]
+
+        while not rospy.is_shutdown():
+            self.togglePublisher.publish(msg)
