@@ -10,20 +10,17 @@ curLight.data = True
 """
 *Subscribe from joystick topic
 """
+
+
 def receive(data):
-	#if(curLight.data != data.data):
-	#	curLight.data = data.data
-	#	print(curLight)
-	#else:
-	#	print("already at that value")
-	print(data.data)
-#	print("X:",str(data.linear.x),"Y:",str(data.linear.y),"Z:",str(data.linear.z))
+    print(data.data)
+
 
 if __name__=="__main__":
-	try:
-		rospy.init_node("InputProc")
+   try:
+		rospy.init_node("light_toggle_subscriber")
 		rospy.Subscriber("Toggle",Bool,receive)
 		rate = rospy.Rate(10)
 		while not rospy.is_shutdown():
-			rate.sleep()
+		    rate.sleep()
 	except rospy.ROSInterruptException: pass

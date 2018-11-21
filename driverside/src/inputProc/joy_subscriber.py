@@ -3,16 +3,17 @@ import rospy
 import yaml
 from sensor_msgs.msg import Joy
 
-# Calls the interpretJoyMsg method of the test ControlScheme whenever a joy message is received
+# Calls the interpretJoyMsg method of the scheme ControlScheme whenever a joy message is received
+# then it sends a twist message and a toggle message for the direction and light respectively
 def recieve(data):
-    test.interpretJoyMsg(data.axes, data.buttons)
-    # test.sendTwistMessage()
-    test.sendToggleMessage()
+    scheme.interpretJoyMsg(data.axes, data.buttons)
+    scheme.sendTwistMessage()
+    scheme.sendToggleMessage()
 
 
 if __name__ == "__main__":
-    test = ControlScheme()
-    test.parseXML()
+    scheme = ControlScheme()
+    scheme.parseXML()
     try:
         rospy.init_node("ControlHandler")
         rospy.Subscriber("joy", Joy, recieve)

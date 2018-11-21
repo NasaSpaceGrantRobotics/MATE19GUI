@@ -8,7 +8,7 @@ def recieve (data):
 
 if __name__ == "__main__":
     try:
-        rospy.init_node("display_twist")
+        rospy.init_node("twist_subscriber")
         rospy.Subscriber("ControlOutput", Twist, recieve)
         rate = rospy.Rate(10)
         while not rospy.is_shutdown():

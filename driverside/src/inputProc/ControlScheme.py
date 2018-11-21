@@ -118,15 +118,13 @@ class ControlScheme:
         msg.angular.y = self.targetControls["angular_y"]
         msg.angular.z = self.targetControls["angular_z"]
 
-        while not rospy.is_shutdown():
-            self.publisher.publish(msg)
+        self.publisher.publish(msg)
 
     def sendToggleMessage(self):
         if not (self.targetControls["light"] == self.previousLightButton):
 
             if(self.targetControls["light"] == 1):
                 self.currentLight.data = not self.currentLight.data
-
-
                 self.togglePublisher.publish(self.currentLight)
+
         self.previousLightButton = self.targetControls["light"]

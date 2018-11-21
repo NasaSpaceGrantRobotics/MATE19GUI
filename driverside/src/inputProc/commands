@@ -28,4 +28,4 @@ rosrun joy joy_node
 
 
 //runs sample subscriber
-python driverside/src/inputProc/sample_subscriber.py
+python driverside/src/inputProc/joy_subscriber.py
