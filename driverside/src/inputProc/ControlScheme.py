@@ -24,6 +24,7 @@
 from lxml import etree
 import rospy
 from geometry_msgs.msg import Twist
+from std_msgs.msg import Bool
 
 
 class ControlScheme:
@@ -32,6 +33,10 @@ class ControlScheme:
         # from axesTarget[n] and the target for the mth index axis will be axesTarget[n][m]
         self.axesTarget = []
         self.buttonsTarget = []
+
+        self.currentLight = Bool()
+        self.currentLight.data = False
+        self.previousLightButton = 0
 
         self.buttonNames = {
             "A": 0,
@@ -61,12 +66,12 @@ class ControlScheme:
         self.targetControls = {}
 
         # Array of all of the different ControlScheme files to be parsed
-        self.XMLfileNames = ["sample_control.xml", "ControlScheme.xml"]
+        self.XMLfileNames = ["sample_control.xml"]
         self.index = 0
 
         self.publisher = rospy.Publisher('ControlOutput', Twist, queue_size=10)
 
-        self.togglePublisher = rospy.Publisher('Toggle', int, queue_size=10)
+        self.togglePublisher = rospy.Publisher('Toggle', Bool, queue_size=10)
 
     # Parses all of the xml files with names in the XMLfileNames array and creates an array
     # of axes and buttons to append to the axesTarget and buttonsTarget arrays respectively
@@ -81,10 +86,10 @@ class ControlScheme:
             buttons = [None]*11
 
             for axis in root.findall("axis"):
-                axes[axesNames[axis.get("name")]] = axis.get("target")
+                axes[self.axesNames[axis.get("name")]] = axis.get("target")
 
             for button in root.findall("button"):
-                buttons[buttonNames[button.get("name")]] = button.get("target")
+                buttons[self.buttonNames[button.get("name")]] = button.get("target")
 
             self.axesTarget.append(axes)
             self.buttonsTarget.append(buttons)
@@ -101,7 +106,8 @@ class ControlScheme:
 
     # changes the index of control schemes
     def setIndex(self, n):
-        self.index = n
+        if n < len(self.axesTarget) and n < len(self.buttonsTarget):
+            self.index = n
 
     def sendTwistMessage(self):
         msg = Twist()
@@ -116,7 +122,11 @@ class ControlScheme:
             self.publisher.publish(msg)
 
     def sendToggleMessage(self):
-        msg = self.targetControls["light"]
+        if not (self.targetControls["light"] == self.previousLightButton):
 
-        while not rospy.is_shutdown():
-            self.togglePublisher.publish(msg)
+            if(self.targetControls["light"] == 1):
+                self.currentLight.data = not self.currentLight.data
+
+
+                self.togglePublisher.publish(self.currentLight)
+        self.previousLightButton = self.targetControls["light"]

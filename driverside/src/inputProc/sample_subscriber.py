@@ -6,7 +6,8 @@ from sensor_msgs.msg import Joy
 # Calls the interpretJoyMsg method of the test ControlScheme whenever a joy message is received
 def recieve(data):
     test.interpretJoyMsg(data.axes, data.buttons)
-    test.sendTwistMessage()
+    # test.sendTwistMessage()
+    test.sendToggleMessage()
 
 
 if __name__ == "__main__":
