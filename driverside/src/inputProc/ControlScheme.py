@@ -1,26 +1,26 @@
-#the indices of values from joy message:
-#index number of / joy.buttons:
-#0 - A
-#1 - B
-#2 - X
-#3 - Y
-#4 - LB
-#5 - RB
-#6 - back
-#7 - start
-#8 - power
-#9 - Button stick left
-#10 - Button stick right
+# the indices of values from joy message:
+# index number of / joy.buttons:
+# 0 - A
+# 1 - B
+# 2 - X
+# 3 - Y
+# 4 - LB
+# 5 - RB
+# 6 - back
+# 7 - start
+# 8 - power
+# 9 - Button stick left
+# 10 - Button stick right
 
-#index number of / joy.axis:
-#0 - Left / Right Axis stick left
-#1 - Up / Down Axis stick left
-#2 - LT
-#3 - Left / Right Axis stick right
-#4 - Up / Down Axis stick right
-#5 - RT
-#6 - cross key left / right
-#7 - cross key up / down
+# index number of / joy.axis:
+# 0 - Left / Right Axis stick left
+# 1 - Up / Down Axis stick left
+# 2 - LT
+# 3 - Left / Right Axis stick right
+# 4 - Up / Down Axis stick right
+# 5 - RT
+# 6 - cross key left / right
+# 7 - cross key up / down
 from lxml import etree
 import rospy
 from geometry_msgs.msg import Twist
@@ -28,8 +28,8 @@ from geometry_msgs.msg import Twist
 
 class ControlScheme:
     def __init__(self):
-        # this will contain an 2D array of different control schemes where the nth control scheme will be designated from
-        # axesTarget[n] and the target for the mth index axis will be axesTarget[n][m]
+        # this will contain an 2D array of different control schemes where the nth control scheme will be designated
+        # from axesTarget[n] and the target for the mth index axis will be axesTarget[n][m]
         self.axesTarget = []
         self.buttonsTarget = []
 
@@ -44,7 +44,6 @@ class ControlScheme:
             "Start": 7,
             "LeftStick": 8,
             "RightStick": 9
-
         }
         self.axesNames = {
             "LeftStickX": 0,
@@ -57,23 +56,22 @@ class ControlScheme:
             "DpadY": 7
         }
 
-        # Dictionary created whenever a joy message is received that matches a target control designated by the ControlScheme
-        # with a value from the joy message
+        # Dictionary created whenever a joy message is received that matches a target control
+        # designated by the ControlScheme with a value from the joy message
         self.targetControls = {}
 
         # Array of all of the different ControlScheme files to be parsed
-        self.XMLfileNames = ["sample_control.xml","ControlScheme.xml"]
+        self.XMLfileNames = ["sample_control.xml", "ControlScheme.xml"]
         self.index = 0
 
-        #rospy.init_node('ControlOutput', anonymous=True)
         self.publisher = rospy.Publisher('ControlOutput', Twist, queue_size=10)
 
-        self.togglePublisher = rospy.Publisher('Toggle', int, queue_size = 10)
+        self.togglePublisher = rospy.Publisher('Toggle', int, queue_size=10)
 
-    # Parses all of the xml files with names in the XMLfileNames array and creates an array of axes and buttons to append
-    # to the axesTarget and buttonsTarget arrays respectively
-    # This is done so that all of the xml files can be read in at the same time and switching between them can be done by
-    # switching the index
+    # Parses all of the xml files with names in the XMLfileNames array and creates an array
+    # of axes and buttons to append to the axesTarget and buttonsTarget arrays respectively
+    # This is done so that all of the xml files can be read in at the same time and
+    # switching between them can be done by switching the index
     def parseXML(self):
         for fileName in self.XMLfileNames:
             tree = etree.parse(fileName)
@@ -101,7 +99,7 @@ class ControlScheme:
             if(not self.buttonsTarget[self.index][i] == None):
                 self.targetControls[self.buttonsTarget[self.index][i]] = buttons_values[i]
 
-    #changes the index of control schemes
+    # changes the index of control schemes
     def setIndex(self, n):
         self.index = n
 
