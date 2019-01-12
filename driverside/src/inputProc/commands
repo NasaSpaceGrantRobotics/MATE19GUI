@@ -27,5 +27,5 @@ rosparam set joy_node/dev /dev/input/jsX
 rosrun joy joy_node
 
 
-//runs sample subscriber
+//runs joy subscriber
 python driverside/src/inputProc/joy_subscriber.py

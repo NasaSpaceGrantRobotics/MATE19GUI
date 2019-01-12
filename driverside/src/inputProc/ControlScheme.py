@@ -106,7 +106,7 @@ class ControlScheme:
 
     # changes the index of control schemes
     def setIndex(self, n):
-        if n < len(self.axesTarget) and n < len(self.buttonsTarget):
+        if n < len(self.axesTarget) and n < len(self.buttonsTarget) and n > 0:
             self.index = n
 
     def sendTwistMessage(self):

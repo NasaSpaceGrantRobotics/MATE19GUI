@@ -17,10 +17,10 @@ def receive(data):
 
 
 if __name__=="__main__":
-   try:
-		rospy.init_node("light_toggle_subscriber")
-		rospy.Subscriber("Toggle",Bool,receive)
-		rate = rospy.Rate(10)
-		while not rospy.is_shutdown():
-		    rate.sleep()
-	except rospy.ROSInterruptException: pass
+    try:
+        rospy.init_node("light_toggle_subscriber")
+        rospy.Subscriber("Toggle", Bool, receive)
+        rate = rospy.Rate(10)
+        while not rospy.is_shutdown():
+            rate.sleep()
+    except rospy.ROSInterruptException: pass
