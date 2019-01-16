@@ -78,6 +78,9 @@ class ControlScheme:
     # This is done so that all of the xml files can be read in at the same time and
     # switching between them can be done by switching the index
     def parseXML(self):
+	"""
+	Parse through all xml files in XMLfileNames to create control scheme
+	"""
         for fileName in self.XMLfileNames:
             tree = etree.parse(fileName)
             root = tree.getroot()
@@ -96,6 +99,15 @@ class ControlScheme:
 
     # Populates the dictionary of targetControls by matching the incoming values with the designated targets
     def interpretJoyMsg(self, axes_values, buttons_values):
+	"""
+	Populates the dictionary of targetControls by matching the incoming 
+	values with the designated targets
+	
+	Keyword arguements:
+	
+	axes_values -- Incoming axes values coming from 360 controller
+	buttons_values -- Incoming buttons values from 360 controller
+	"""
         for i in range(len(axes_values)):
             if(not self.axesTarget[self.index][i] == None):
                 self.targetControls[self.axesTarget[self.index][i]] = axes_values[i]
@@ -106,10 +118,20 @@ class ControlScheme:
 
     # changes the index of control schemes
     def setIndex(self, n):
+	""" 
+	changes the index of control schemes
+	
+	Keyword arguements:
+	
+	n -- the index value of control scheme to be changed to 
+	"""
         if n < len(self.axesTarget) and n < len(self.buttonsTarget) and n >= 0:
 		self.index = n
 
     def sendTwistMessage(self):
+	"""
+	publish twist message with linear x,y,z and angular x,y,z
+	"""
         msg = Twist()
         msg.linear.x = self.targetControls["linear_x"]
         msg.linear.y = self.targetControls["linear_y"]
@@ -121,6 +143,9 @@ class ControlScheme:
         self.publisher.publish(msg)
 
     def sendToggleMessage(self):
+	"""
+	Publish boolean message indicating the current state of light
+	"""
         if not (self.targetControls["light"] == self.previousLightButton):
 
             if(self.targetControls["light"] == 1):
