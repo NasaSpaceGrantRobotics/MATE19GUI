@@ -14,7 +14,7 @@ def recieve(data):
 def recieve2(data):
 	print(data)
 	print("scheme index : ",scheme.index)
-	scheme.setIndex(data.data)
+    scheme.setIndex(data.data)
 	print(scheme.index)
 
 
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     try:
         rospy.init_node("ControlHandler")
         rospy.Subscriber("joy", Joy, recieve)
-	rospy.Subscriber("gui", Int8, recieve2)
+	    rospy.Subscriber("gui", Int8, recieve2)
         rate = rospy.Rate(10)
         while not rospy.is_shutdown():
             rate.sleep()
