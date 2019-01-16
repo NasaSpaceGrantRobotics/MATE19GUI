@@ -24,9 +24,9 @@
 -->
 
 <ControlScheme>
-    <button target="light" name="A"/>
+    <button target="A" name="A"/>
     <button target="switch" name="B"/>
-    <button target="X" name="X"/>
+    <button target="light" name="X"/>
     <button target="Y" name="Y"/>
     <button target="LB" name="LB"/>
     <button target="RB" name="RB"/>

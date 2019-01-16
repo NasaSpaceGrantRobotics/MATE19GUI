@@ -66,7 +66,7 @@ class ControlScheme:
         self.targetControls = {}
 
         # Array of all of the different ControlScheme files to be parsed
-        self.XMLfileNames = ["sample_control.xml"]
+        self.XMLfileNames = ["sample_control.xml","sample_control2.xml"]
         self.index = 0
 
         self.publisher = rospy.Publisher('ControlOutput', Twist, queue_size=10)
@@ -106,8 +106,8 @@ class ControlScheme:
 
     # changes the index of control schemes
     def setIndex(self, n):
-        if n < len(self.axesTarget) and n < len(self.buttonsTarget) and n > 0:
-            self.index = n
+        if n < len(self.axesTarget) and n < len(self.buttonsTarget) and n >= 0:
+		self.index = n
 
     def sendTwistMessage(self):
         msg = Twist()
