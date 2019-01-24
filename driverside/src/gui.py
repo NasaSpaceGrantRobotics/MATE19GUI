@@ -3,8 +3,8 @@
 import sys
 import rospy
 import cv2
-import PySide2
-from PySide2.QtWidgets import QWidget
+from PySide2.QtWidgets import QWidget, QApplication, QMenuBar, QStatusBar, QLabel, QVBoxLayout
+from PySide2.QtGui import QPixmap, QColor, QImage
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 
@@ -17,22 +17,26 @@ class GUI(QWidget):
 
     def initUI(self):
         # setup menubar
-        menubar = self.menuBar()
+        menu_bar = QMenuBar(self)
 
         # setup file menu and all its items
-        file_menu = menubar.addMenu('&File')
+        file_menu = menu_bar.addMenu('&File')
 
         # setup debug menu and all its items
-        debug_menu = menubar.addMenu('&Debug')
+        debug_menu = menu_bar.addMenu('&Debug')
 
         # setup controls menu and all its items
-        controls_menu = menubar.addMenu('&Controls')
+        controls_menu = menu_bar.addMenu('&Controls')
 
         # setup status bar
-        self.statusBar()
+        self.status_bar = QStatusBar(self)
 
         # setup Video object for camera feeds
-        vid = Video()
+        self.vid = Video()
+
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self.vid)
+        self.setLayout(self.layout)
 
         self.setWindowTitle('ASU MATE 2019 Video Feed')
         self.showMaximized()
@@ -47,9 +51,9 @@ class Video(QWidget):
         self._img = None
 
         self._label = QLabel(self)
-        # self._pxmp = QPixmap()
-        # self._pxmp.fill(QColor.setNamedColor('black'))
-        self._label.setPixmap(QPixmap.fill(QColor.setNamedColor('black')))
+        self._pxmp = QPixmap()
+        self._pxmp.fill(QColor('black'))
+        self._label.setPixmap(self._pxmp)
 
         self._layout = QVBoxLayout()
         self._layout.addWidget(self._label)
@@ -58,31 +62,33 @@ class Video(QWidget):
     def vid_callback(self, data):
         try:
             # convert received ROS Image to cv2 image
-            self._frame = self._bridge.imgmsg_to_cv2(data, "bgr8")
-            print("Frame received")
+            self._frame = self._bridge.imgmsg_to_cv2(data, 'bgr8')
+            rospy.loginfo("Frame received; message type: %s", type(self._frame))
 
             # convert cv2 image to QPixmap
-            self._img = QImage(self._frame, self._frame.shape[1], self_frame.shape[0])
-            print("Frame converted")
+            self._img = QImage(self._frame.data, self._frame.shape[1], self._frame.shape[0], self._frame.strides[0], QImage.Format_RGB888)
+            rospy.loginfo("Frame converted: frame type: %s", type(self._img))
 
             # paint QPixmap as label
             self._label.setPixmap(QPixmap.fromImage(self._img))
-            print("Frame painted")
+            rospy.loginfo("Frame painted")
 
             self.update()
         # rewrite in Python 2
-        except CvBridgeError as e:
-            print(e)
+        except CvBridgeError, e:
+            print e
 
 
 def main():
     app = QApplication([])
 
     # create node
-    rospy.init_node('gui')
+    rospy.init_node('vidSub')
     gui = GUI()
 
-    rospy.Subscriber("cam_front", Image, gui.prim_vid.vid_callback())
+    # define subscribed topics, data types, and callback functions
+    rospy.Subscriber('vidFeed', Image, gui.vid.vid_callback)
+
     sys.exit(app.exec_())
 
 
