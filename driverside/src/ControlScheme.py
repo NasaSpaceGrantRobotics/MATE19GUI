@@ -74,13 +74,12 @@ class ControlScheme:
         self.XMLfileNames = glob.glob("./scheme_*.xml")
         self.index = 0
 
-        self.transXPublisher = rospy.Publisher('transXPID', Float64, queue_size=10)
-        self.transYPublisher = rospy.Publisher('transYPID', Float64, queue_size=10)
-        self.transZPublisher = rospy.Publisher('transZPID', Float64, queue_size=10)
-        self.angXYPublisher = rospy.Publisher('angXYPID', Float64, queue_size=10)
-        self.angXZPublisher = rospy.Publisher('angXZPID', Float64, queue_size=10)
-    self.angYZPublisher = rospy.Publisher('angYZPID', Float64, queue_size=10)
-
+        self.transXPublisher = rospy.Publisher('setpoint/trans/x', Float64, queue_size=10)
+        self.transYPublisher = rospy.Publisher('setpoint/trans/y', Float64, queue_size=10)
+        self.transZPublisher = rospy.Publisher('setpoint/trans/y', Float64, queue_size=10)
+        self.angXYPublisher = rospy.Publisher('setpoint/rot/x', Float64, queue_size=10)
+        self.angXZPublisher = rospy.Publisher('setpoint/rot/y', Float64, queue_size=10)
+        self.angYZPublisher = rospy.Publisher('setpoint/rot/z', Float64, queue_size=10)
         self.togglePublisher = rospy.Publisher('Toggle', Bool, queue_size=10)
 
     # Parses all of the xml files with names in the XMLfileNames array and creates an array

@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # the indices of values from joy message:
 # index number of / joy.buttons:
 # 0 - A
@@ -25,7 +24,6 @@
 from lxml import etree
 import rospy
 from geometry_msgs.msg import Twist
-from std_msgs.msg import Float64
 from std_msgs.msg import Bool
 import glob
 
@@ -74,12 +72,12 @@ class ControlScheme:
         self.XMLfileNames = glob.glob("./scheme_*.xml")
         self.index = 0
 
-        self.transXPublisher = rospy.Publisher('transXPID', Float64, queue_size=10)
-        self.transYPublisher = rospy.Publisher('transYPID', Float64, queue_size=10)
-        self.transZPublisher = rospy.Publisher('transZPID', Float64, queue_size=10)
-        self.angXYPublisher = rospy.Publisher('angXYPID', Float64, queue_size=10)
-        self.angXZPublisher = rospy.Publisher('angXZPID', Float64, queue_size=10)
-    self.angYZPublisher = rospy.Publisher('angYZPID', Float64, queue_size=10)
+        self.transXPublisher = rospy.Publisher('transXPID', Twist, queue_size=10)
+	self.transYPublisher = rospy.Publisher('transYPID', float64, queue_size=10) 
+	self.transZPublisher = rospy.Publisher('transZPID', float64, queue_size=10)
+	self.angXYPublisher = rospy.Publisher('angXYPID', float64, queue_size=10)
+	self.angXZPublisher = rospy.Publisher('angXZPID', float64, queue_size=10)
+	self.angYZPublisher = rospy.Publisher('angYZPID', float64, queue_size=10)
 
         self.togglePublisher = rospy.Publisher('Toggle', Bool, queue_size=10)
 
