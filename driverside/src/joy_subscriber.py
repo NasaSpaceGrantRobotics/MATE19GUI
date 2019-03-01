@@ -7,12 +7,15 @@ from std_msgs.msg import Int8
 
 # Calls the interpretJoyMsg method of the scheme ControlScheme whenever a joy message is received
 # then it sends a twist message and a toggle message for the direction and light respectively
-def recieve(data):
+
+
+def receive(data):
 	scheme.interpretJoyMsg(data.axes, data.buttons)
 	scheme.sendTargetMessage()
 	scheme.sendToggleMessage()
-	
-def recieve2(data):
+
+
+def receive2(data):
 	print(data)
 	print("scheme index : ",scheme.index)
 	scheme.setIndex(data.data)
@@ -24,8 +27,8 @@ if __name__ == "__main__":
     scheme.parseXML()
     try:
         rospy.init_node("ControlHandler")
-        rospy.Subscriber("joy", Joy, recieve)
-	rospy.Subscriber("gui", Int8, recieve2)
+        rospy.Subscriber("joy", Joy, receive)
+        rospy.Subscriber("gui", Int8, receive2)
         rate = rospy.Rate(10)
         while not rospy.is_shutdown():
             rate.sleep()

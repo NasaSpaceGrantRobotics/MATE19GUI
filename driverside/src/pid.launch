@@ -1,4 +1,10 @@
 <launch>
+   <node name="ControlHandler" type="joy_subscriber.py" pkg="driverside" output="screen">
+
+   </node>
+   <node name="VectorRecombiner" type="vector_recombiner.py" pkg="driverside" output="screen">
+
+   </node>
    <node name="pid_trans_x" pkg="pid" type="controller" ns="pid" output="screen" >
       <remap from="control_effort" to="/control_effort/trans/x" />
       <param name="Kp" value="5.0" />
@@ -104,7 +110,7 @@
     <!-- <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
     args="/control_effort/data /state/data /transXPID/data /transYPID/data" /> -->
 
-    <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure" />
+    <!--<node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure" />
 
-    <node name="rqt_robot_monitor" pkg="rqt_robot_monitor" type="rqt_robot_monitor" />
+    <node name="rqt_robot_monitor" pkg="rqt_robot_monitor" type="rqt_robot_monitor" />-->
 </launch>
