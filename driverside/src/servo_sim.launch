@@ -1,0 +1,110 @@
+<launch>
+   <node name="pid_trans_x" pkg="pid" type="controller" ns="pid" output="screen" >
+      <remap from="control_effort" to="/control_effort/trans/x" />
+      <param name="Kp" value="5.0" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="0.1" />
+      <param name="upper_limit" value="10" />
+      <param name="lower_limit" value="-10" />
+      <param name="windup_limit" value="10" />
+      <param name="cutoff_frequency" value="20" />
+      <param name="max_loop_frequency" value="105.0" />
+      <param name="min_loop_frequency" value="95.0" />
+      <param name="setpoint_topic" value="/setpoint/trans/x"/>
+      <param name="topic_from_controller" value="/control_effort/trans/x"/>
+     </node>
+
+   <node name="pid_trans_y" pkg="pid" type="controller" ns="pid" output="screen" >
+      <remap from="control_effort" to="/control_effort/trans/y" />
+      <param name="Kp" value="5.0" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="0.1" />
+      <param name="upper_limit" value="10" />
+      <param name="lower_limit" value="-10" />
+      <param name="windup_limit" value="10" />
+      <param name="cutoff_frequency" value="20" />
+      <param name="max_loop_frequency" value="105.0" />
+      <param name="min_loop_frequency" value="95.0" />
+      <param name="setpoint_topic" value="/setpoint/trans/y"/>
+      <param name="topic_from_controller" value="/control_effort/trans/y"/>
+   </node>
+
+   <node name="pid_trans_z" pkg="pid" type="controller" ns="pid" output="screen" >
+      <remap from="control_effort" to="/control_effort/trans/z" />
+      <param name="Kp" value="5.0" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="0.1" />
+      <param name="upper_limit" value="10" />
+      <param name="lower_limit" value="-10" />
+      <param name="windup_limit" value="10" />
+      <param name="cutoff_frequency" value="20" />
+      <param name="max_loop_frequency" value="105.0" />
+      <param name="min_loop_frequency" value="95.0" />
+      <param name="setpoint_topic" value="/setpoint/trans/z"/>
+      <param name="topic_from_controller" value="/control_effort/trans/z"/>
+     </node>
+
+   <node name="pid_rot_x" pkg="pid" type="controller" ns="pid" output="screen" >
+      <remap from="control_effort" to="/control_effort/rot/x" />
+      <param name="Kp" value="5.0" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="0.1" />
+      <param name="upper_limit" value="10" />
+      <param name="lower_limit" value="-10" />
+      <param name="windup_limit" value="10" />
+      <param name="cutoff_frequency" value="20" />
+      <param name="max_loop_frequency" value="105.0" />
+      <param name="min_loop_frequency" value="95.0" />
+      <param name="setpoint_topic" value="/setpoint/rot/x"/>
+      <param name="topic_from_controller" value="/control_effort/rot/x"/>
+   </node>
+
+   <node name="pid_rot_y" pkg="pid" type="controller" ns="pid" output="screen" >
+      <remap from="control_effort" to="/control_effort/rot/y" />
+      <param name="Kp" value="5.0" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="0.1" />
+      <param name="upper_limit" value="10" />
+      <param name="lower_limit" value="-10" />
+      <param name="windup_limit" value="10" />
+      <param name="cutoff_frequency" value="20" />
+      <param name="max_loop_frequency" value="105.0" />
+      <param name="min_loop_frequency" value="95.0" />
+      <param name="setpoint_topic" value="/setpoint/rot/y"/>
+      <param name="topic_from_controller" value="/control_effort/rot/y"/>
+   </node>
+
+   <node name="pid_rot_z" pkg="pid" type="controller" ns="pid" output="screen" >
+      <remap from="control_effort" to="/control_effort/rot/z" />
+      <param name="Kp" value="5.0" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="0.1" />
+      <param name="upper_limit" value="10" />
+      <param name="lower_limit" value="-10" />
+      <param name="windup_limit" value="10" />
+      <param name="cutoff_frequency" value="20" />
+      <param name="max_loop_frequency" value="105.0" />
+      <param name="min_loop_frequency" value="95.0" />
+      <param name="setpoint_topic" value="/setpoint/rot/z"/>
+      <param name="topic_from_controller" value="/control_effort/rot/z"/>
+   </node>
+
+
+
+
+    <!--<node name="servo_sim_node_x" pkg="pid" type="plant_sim" ns="controleffort/trans/x" output="screen" >
+      <param name="plant_order" value="2" />
+    </node>
+
+    <node name="servo_sim_node_y" pkg="pid" type="plant_sim" ns="controleffort/trans/y" output="screen" >
+      <param name="plant_order" value="2" />
+    </node>-->
+
+    <!-- rqt_plot is a resource hog, so if you're seeing high CPU usage, don't launch rqt_plot  -->
+    <!-- <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
+    args="/control_effort/data /state/data /transXPID/data /transYPID/data" /> -->
+
+    <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure" />
+
+    <node name="rqt_robot_monitor" pkg="rqt_robot_monitor" type="rqt_robot_monitor" />
+</launch>

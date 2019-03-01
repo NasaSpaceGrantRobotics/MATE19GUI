@@ -76,7 +76,7 @@ class ControlScheme:
 
         self.transXPublisher = rospy.Publisher('setpoint/trans/x', Float64, queue_size=10)
         self.transYPublisher = rospy.Publisher('setpoint/trans/y', Float64, queue_size=10)
-        self.transZPublisher = rospy.Publisher('setpoint/trans/y', Float64, queue_size=10)
+        self.transZPublisher = rospy.Publisher('setpoint/trans/z', Float64, queue_size=10)
         self.angXYPublisher = rospy.Publisher('setpoint/rot/x', Float64, queue_size=10)
         self.angXZPublisher = rospy.Publisher('setpoint/rot/y', Float64, queue_size=10)
         self.angYZPublisher = rospy.Publisher('setpoint/rot/z', Float64, queue_size=10)

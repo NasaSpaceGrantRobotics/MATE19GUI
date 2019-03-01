@@ -8,9 +8,9 @@ from std_msgs.msg import Int8
 # Calls the interpretJoyMsg method of the scheme ControlScheme whenever a joy message is received
 # then it sends a twist message and a toggle message for the direction and light respectively
 def recieve(data):
-	scheme.interpretJoyMsg(data.axes, data.buttons)
-	scheme.sendTargetMessage()
-	scheme.sendToggleMessage()
+    scheme.interpretJoyMsg(data.axes, data.buttons)
+    scheme.sendTargetMessage()
+    scheme.sendToggleMessage()
 	
 def recieve2(data):
 	print(data)
