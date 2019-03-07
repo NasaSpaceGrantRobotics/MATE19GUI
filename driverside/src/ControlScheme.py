@@ -30,10 +30,10 @@ from std_msgs.msg import Bool
 import glob
 
 class ControlScheme:
-    def __init__(self):
+    def __init__(self, directory):
         """
-		    initializes an instance of a control scheme
-	    """
+            initializes an instance of a control scheme
+        """
         # this will contain an 2D array of different control schemes where the nth control scheme will be designated
         # from axesTarget[n] and the target for the mth index axis will be axesTarget[n][m]
         self.axesTarget = []
@@ -71,7 +71,7 @@ class ControlScheme:
         self.targetControls = {}
 
         # Array of all of the different ControlScheme files to be parsed
-        self.XMLfileNames = glob.glob("./scheme_*.xml")
+        self.XMLfileNames = glob.glob(directory + "/scheme_*.xml")
         self.index = 0
 
         self.transXPublisher = rospy.Publisher('setpoint/trans/x', Float64, queue_size=10)
@@ -89,7 +89,7 @@ class ControlScheme:
     def parseXML(self):
         """
         Parse through all xml files in XMLfileNames to create control scheme
-	    """
+        """
         for fileName in self.XMLfileNames:
             tree = etree.parse(fileName)
             root = tree.getroot()
@@ -109,14 +109,14 @@ class ControlScheme:
     # Populates the dictionary of targetControls by matching the incoming values with the designated targets
     def interpretJoyMsg(self, axes_values, buttons_values):
         """
-	    Populates the dictionary of targetControls by matching the incoming
-	    values with the designated targets
-	
-	    Keyword arguements:
-	
-	    axes_values -- Incoming axes values coming from 360 controller
-	    buttons_values -- Incoming buttons values from 360 controller
-	    """
+        Populates the dictionary of targetControls by matching the incoming
+        values with the designated targets
+
+        Keyword arguements:
+
+        axes_values -- Incoming axes values coming from 360 controller
+        buttons_values -- Incoming buttons values from 360 controller
+        """
         for i in range(len(axes_values)):
             if(not self.axesTarget[self.index][i] == None):
                 self.targetControls[self.axesTarget[self.index][i]] = axes_values[i]
@@ -140,7 +140,7 @@ class ControlScheme:
     def sendTargetMessage(self):
         """
 	    publish twist message with linear x,y,z and angular x,y,z
-	    """
+        """
         self.transXPublisher.publish(self.targetControls["linear_x"])
         self.transYPublisher.publish(self.targetControls["linear_y"])
         self.transZPublisher.publish(self.targetControls["linear_z"])

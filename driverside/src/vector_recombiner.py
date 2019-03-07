@@ -10,33 +10,34 @@ from geometry_msgs.msg import Twist
 
 
 def receive_trans_x(data):
-    controlEffort.linear.x = data
+    controlEffort.linear.x = data.data
 
 
 def receive_trans_y(data):
-    controlEffort.linear.y = data
+    controlEffort.linear.y = data.data
 
 
 def receive_trans_z(data):
-    controlEffort.linear.z = data
+    controlEffort.linear.z = data.data
 
 
 def receive_rot_x(data):
-    controlEffort.angular.x = data
+    controlEffort.angular.x = data.data
 
 
 def receive_rot_y(data):
-    controlEffort.linear.y = data
+    controlEffort.angular.y = data.data
 
 
 def receive_rot_z(data):
-    controlEffort.linear.z = data
+    controlEffort.angular.z = data.data
 
 
 if __name__ == "__main__":
-    twistPublisher = rospy.Publisher('control_effort', Twist, queue_size=10)
-
+    twistPublisher = rospy.Publisher('/control_effort_final', Twist, queue_size=10)
     controlEffort = Twist()
+
+    print("test")
     try:
         rospy.init_node("VectorRecombiner")
         rospy.Subscriber("/control_effort/trans/x", Float64, receive_trans_x)
@@ -49,6 +50,6 @@ if __name__ == "__main__":
         rate = rospy.Rate(10)
         while not rospy.is_shutdown():
             rate.sleep()
-        twistPublisher.publish(controlEffort)
+            twistPublisher.publish(controlEffort)
     except rospy.ROSInterruptException:
         pass

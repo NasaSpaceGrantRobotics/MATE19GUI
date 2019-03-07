@@ -1,8 +1,11 @@
 <launch>
-   <node name="ControlHandler" type="joy_subscriber.py" pkg="driverside" output="screen">
+   <node name="ControlHandler" type="joy_subscriber.py" pkg="driverside" output="screen" args="$(find driverside)/src">
 
    </node>
    <node name="VectorRecombiner" type="vector_recombiner.py" pkg="driverside" output="screen">
+
+   </node>
+   <node name="IMUsplitter" type="IMUsplitter.py" pkg="driverside" output="screen">
 
    </node>
    <node name="pid_trans_x" pkg="pid" type="controller" ns="pid" output="screen" >
@@ -18,7 +21,8 @@
       <param name="min_loop_frequency" value="95.0" />
       <param name="setpoint_topic" value="/setpoint/trans/x"/>
       <param name="topic_from_controller" value="/control_effort/trans/x"/>
-     </node>
+      <param name="topic_from_plant" value="/state/trans/x"/>
+   </node>
 
    <node name="pid_trans_y" pkg="pid" type="controller" ns="pid" output="screen" >
       <remap from="control_effort" to="/control_effort/trans/y" />
@@ -33,6 +37,7 @@
       <param name="min_loop_frequency" value="95.0" />
       <param name="setpoint_topic" value="/setpoint/trans/y"/>
       <param name="topic_from_controller" value="/control_effort/trans/y"/>
+      <param name="topic_from_plant" value="/state/trans/y"/>
    </node>
 
    <node name="pid_trans_z" pkg="pid" type="controller" ns="pid" output="screen" >
@@ -48,6 +53,7 @@
       <param name="min_loop_frequency" value="95.0" />
       <param name="setpoint_topic" value="/setpoint/trans/z"/>
       <param name="topic_from_controller" value="/control_effort/trans/z"/>
+      <param name="topic_from_plant" value="/state/trans/z"/>
      </node>
 
    <node name="pid_rot_x" pkg="pid" type="controller" ns="pid" output="screen" >
@@ -63,6 +69,7 @@
       <param name="min_loop_frequency" value="95.0" />
       <param name="setpoint_topic" value="/setpoint/rot/x"/>
       <param name="topic_from_controller" value="/control_effort/rot/x"/>
+      <param name="topic_from_plant" value="/state/rot/x"/>
    </node>
 
    <node name="pid_rot_y" pkg="pid" type="controller" ns="pid" output="screen" >
@@ -78,6 +85,7 @@
       <param name="min_loop_frequency" value="95.0" />
       <param name="setpoint_topic" value="/setpoint/rot/y"/>
       <param name="topic_from_controller" value="/control_effort/rot/y"/>
+      <param name="topic_from_plant" value="/state/rot/y"/>
    </node>
 
    <node name="pid_rot_z" pkg="pid" type="controller" ns="pid" output="screen" >
@@ -93,6 +101,7 @@
       <param name="min_loop_frequency" value="95.0" />
       <param name="setpoint_topic" value="/setpoint/rot/z"/>
       <param name="topic_from_controller" value="/control_effort/rot/z"/>
+      <param name="topic_from_plant" value="/state/rot/z"/>
    </node>
 
 
@@ -107,10 +116,9 @@
     </node>-->
 
     <!-- rqt_plot is a resource hog, so if you're seeing high CPU usage, don't launch rqt_plot  -->
-    <!-- <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"
-    args="/control_effort/data /state/data /transXPID/data /transYPID/data" /> -->
+     <node name="rqt_plot" pkg="rqt_plot" type="rqt_plot"/>
 
-    <!--<node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure" />
+    <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure" />
 
-    <node name="rqt_robot_monitor" pkg="rqt_robot_monitor" type="rqt_robot_monitor" />-->
+    <node name="rqt_robot_monitor" pkg="rqt_robot_monitor" type="rqt_robot_monitor" />
 </launch>

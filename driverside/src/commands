@@ -29,3 +29,7 @@ rosrun joy joy_node
 
 //runs joy subscriber
 python driverside/src/inputProc/joy_subscriber.py
+
+
+//adds the correct packages to the path
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/home/nasgrds/catkin_ws/MATE19/driverside
