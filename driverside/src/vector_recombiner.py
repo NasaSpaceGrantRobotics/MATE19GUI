@@ -34,7 +34,7 @@ def receive_rot_z(data):
 
 
 if __name__ == "__main__":
-    twistPublisher = rospy.Publisher('/control_effort_final', Twist, queue_size=10)
+    twistPublisher = rospy.Publisher('/control_effort_final', Twist, queue_size=1)
     controlEffort = Twist()
 
     print("test")

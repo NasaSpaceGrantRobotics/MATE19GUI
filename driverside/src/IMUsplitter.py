@@ -20,12 +20,12 @@ def receive(data):
 
 
 if __name__ == "__main__":
-    transXPublisher = rospy.Publisher('/state/trans/x', Float64, queue_size=10)
-    transYPublisher = rospy.Publisher('/state/trans/y', Float64, queue_size=10)
-    transZPublisher = rospy.Publisher('/state/trans/z', Float64, queue_size=10)
-    rotXPublisher = rospy.Publisher('/state/rot/x', Float64, queue_size=10)
-    rotYPublisher = rospy.Publisher('/state/rot/y', Float64, queue_size=10)
-    rotZPublisher = rospy.Publisher('/state/rot/z', Float64, queue_size=10)
+    transXPublisher = rospy.Publisher('/state/trans/x', Float64, queue_size=1)
+    transYPublisher = rospy.Publisher('/state/trans/y', Float64, queue_size=1)
+    transZPublisher = rospy.Publisher('/state/trans/z', Float64, queue_size=1)
+    rotXPublisher = rospy.Publisher('/state/rot/x', Float64, queue_size=1)
+    rotYPublisher = rospy.Publisher('/state/rot/y', Float64, queue_size=1)
+    rotZPublisher = rospy.Publisher('/state/rot/z', Float64, queue_size=1)
 
     try:
         rospy.init_node("IMUsplitter")

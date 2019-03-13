@@ -24,7 +24,7 @@ if __name__ == "__main__":
     transState = [0, 0, 0]
     rotState = [0, 0, 0]
 
-    imuPublisher = rospy.Publisher('/imu_data', Imu, queue_size=10)
+    imuPublisher = rospy.Publisher('/imu_data', Imu, queue_size=1)
     try:
         rospy.init_node("dummy_IMU")
         rospy.Subscriber("/control_effort_final", Twist, receive)

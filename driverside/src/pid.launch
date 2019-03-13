@@ -22,6 +22,7 @@
       <param name="setpoint_topic" value="/setpoint/trans/x"/>
       <param name="topic_from_controller" value="/control_effort/trans/x"/>
       <param name="topic_from_plant" value="/state/trans/x"/>
+      <param name="queue_size" value="1" />
    </node>
 
    <node name="pid_trans_y" pkg="pid" type="controller" ns="pid" output="screen" >
@@ -38,6 +39,7 @@
       <param name="setpoint_topic" value="/setpoint/trans/y"/>
       <param name="topic_from_controller" value="/control_effort/trans/y"/>
       <param name="topic_from_plant" value="/state/trans/y"/>
+      <param name="queue_size" value="1" />
    </node>
 
    <node name="pid_trans_z" pkg="pid" type="controller" ns="pid" output="screen" >
@@ -54,6 +56,7 @@
       <param name="setpoint_topic" value="/setpoint/trans/z"/>
       <param name="topic_from_controller" value="/control_effort/trans/z"/>
       <param name="topic_from_plant" value="/state/trans/z"/>
+      <param name="queue_size" value="1" />
      </node>
 
    <node name="pid_rot_x" pkg="pid" type="controller" ns="pid" output="screen" >
@@ -70,6 +73,7 @@
       <param name="setpoint_topic" value="/setpoint/rot/x"/>
       <param name="topic_from_controller" value="/control_effort/rot/x"/>
       <param name="topic_from_plant" value="/state/rot/x"/>
+      <param name="queue_size" value="1" />
    </node>
 
    <node name="pid_rot_y" pkg="pid" type="controller" ns="pid" output="screen" >
@@ -86,6 +90,7 @@
       <param name="setpoint_topic" value="/setpoint/rot/y"/>
       <param name="topic_from_controller" value="/control_effort/rot/y"/>
       <param name="topic_from_plant" value="/state/rot/y"/>
+      <param name="queue_size" value="1" />
    </node>
 
    <node name="pid_rot_z" pkg="pid" type="controller" ns="pid" output="screen" >
@@ -102,6 +107,7 @@
       <param name="setpoint_topic" value="/setpoint/rot/z"/>
       <param name="topic_from_controller" value="/control_effort/rot/z"/>
       <param name="topic_from_plant" value="/state/rot/z"/>
+      <param name="queue_size" value="1" />
    </node>
 
 
