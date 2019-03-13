@@ -10,22 +10,22 @@ from sensor_msgs.msg import Imu
 
 
 def receive(data):
-    transXPublisher.publish(data.linear_acceleration.x)
-    transYPublisher.publish(data.linear_acceleration.y)
-    transZPublisher.publish(data.linear_acceleration.z)
+    trans_x_publisher.publish(data.linear_acceleration.x)
+    trans_y_publisher.publish(data.linear_acceleration.y)
+    trans_z_publisher.publish(data.linear_acceleration.z)
 
-    rotXPublisher.publish(data.angular_velocity.x)
-    rotYPublisher.publish(data.angular_velocity.y)
-    rotZPublisher.publish(data.angular_velocity.z)
+    rot_x_publisher.publish(data.angular_velocity.x)
+    rot_y_publisher.publish(data.angular_velocity.y)
+    rot_z_publisher.publish(data.angular_velocity.z)
 
 
 if __name__ == "__main__":
-    transXPublisher = rospy.Publisher('/state/trans/x', Float64, queue_size=1)
-    transYPublisher = rospy.Publisher('/state/trans/y', Float64, queue_size=1)
-    transZPublisher = rospy.Publisher('/state/trans/z', Float64, queue_size=1)
-    rotXPublisher = rospy.Publisher('/state/rot/x', Float64, queue_size=1)
-    rotYPublisher = rospy.Publisher('/state/rot/y', Float64, queue_size=1)
-    rotZPublisher = rospy.Publisher('/state/rot/z', Float64, queue_size=1)
+    trans_x_publisher = rospy.Publisher('/state/trans/x', Float64, queue_size=1)
+    trans_y_publisher = rospy.Publisher('/state/trans/y', Float64, queue_size=1)
+    trans_z_publisher = rospy.Publisher('/state/trans/z', Float64, queue_size=1)
+    rot_x_publisher = rospy.Publisher('/state/rot/x', Float64, queue_size=1)
+    rot_y_publisher = rospy.Publisher('/state/rot/y', Float64, queue_size=1)
+    rot_z_publisher = rospy.Publisher('/state/rot/z', Float64, queue_size=1)
 
     try:
         rospy.init_node("IMUsplitter")
