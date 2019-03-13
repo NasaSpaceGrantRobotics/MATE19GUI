@@ -11,27 +11,28 @@ import sys
 
 
 def receive(data):
-    scheme.interpretJoyMsg(data.axes, data.buttons)
-    scheme.sendToggleMessage()
+    scheme.interpret_joy_msg(data.axes, data.buttons)
+    scheme.send_toggle_message()
 
 
 def receive2(data):
     print(data)
     print("scheme index : ",scheme.index)
-    scheme.setIndex(data.data)
+    scheme.set_index(data.data)
     print(scheme.index)
 
 
 if __name__ == "__main__":
     scheme = ControlScheme(rospy.myargv(argv=sys.argv)[1])
-    scheme.parseXML()
-    scheme.interpretJoyMsg([None]*8, [None]*11)
+    scheme.parse_xml()
+    scheme.interpret_joy_msg([None]*8, [None]*11)
     try:
         rospy.init_node("ControlHandler")
         rospy.Subscriber("joy", Joy, receive)
         rospy.Subscriber("gui", Int8, receive2)
         rate = rospy.Rate(50)
         while not rospy.is_shutdown():
-            scheme.sendTargetMessage()
+            scheme.send_target_message()
             rate.sleep()
-    except rospy.ROSInterruptException: pass
+    except rospy.ROSInterruptException:
+        pass

@@ -35,12 +35,12 @@
     <button target="LeftStick" name = "LeftStick"/>
     <button target="RightStick" name = "RightStick"/>
 
-    <axis target="linear_x" name="LeftStickX"/>
-    <axis target="linear_y" name="LeftStickY"/>
-    <axis target="linear_z" name="LeftTrigger"/>
-    <axis target="angular_xy" name="RightStickX"/>
-    <axis target="angular_xz" name="RightStickY"/>
-    <axis target="angular_yz" name="RightTrigger"/>
+    <axis target="trans_x" name="LeftStickX"/>
+    <axis target="trans_y" name="LeftStickY"/>
+    <axis target="trans_z" name="LeftTrigger"/>
+    <axis target="rot_x" name="RightStickX"/>
+    <axis target="rot_y" name="RightStickY"/>
+    <axis target="rot_z" name="RightTrigger"/>
     <axis target="LR Dpad" name="DpadX"/>
     <axis target="UD Dpad" name="DpadY"/>
 </ControlScheme>

@@ -29,6 +29,7 @@ from std_msgs.msg import Float64
 from std_msgs.msg import Bool
 import glob
 
+
 class ControlScheme:
     def __init__(self, directory):
         """
@@ -36,14 +37,14 @@ class ControlScheme:
         """
         # this will contain an 2D array of different control schemes where the nth control scheme will be designated
         # from axesTarget[n] and the target for the mth index axis will be axesTarget[n][m]
-        self.axesTarget = []
-        self.buttonsTarget = []
+        self.axes_target = []
+        self.buttons_target = []
 
-        self.currentLight = Bool()
-        self.currentLight.data = False
-        self.previousLightButton = 0
+        self.current_light = Bool()
+        self.current_light.data = False
+        self.previous_light_button = 0
 
-        self.buttonNames = {
+        self.button_names = {
             "A": 0,
             "B": 1,
             "X": 2,
@@ -55,7 +56,7 @@ class ControlScheme:
             "LeftStick": 8,
             "RightStick": 9
         }
-        self.axesNames = {
+        self.axes_names = {
             "LeftStickX": 0,
             "LeftStickY": 1,
             "LeftTrigger": 2,
@@ -68,46 +69,46 @@ class ControlScheme:
 
         # Dictionary created whenever a joy message is received that matches a target control
         # designated by the ControlScheme with a value from the joy message
-        self.targetControls = {}
+        self.target_controls = {}
 
         # Array of all of the different ControlScheme files to be parsed
-        self.XMLfileNames = glob.glob(directory + "/scheme_*.xml")
+        self.XML_file_names = glob.glob(directory + "/scheme_*.xml")
         self.index = 0
 
-        self.transXPublisher = rospy.Publisher('setpoint/trans/x', Float64, queue_size=1)
-        self.transYPublisher = rospy.Publisher('setpoint/trans/y', Float64, queue_size=1)
-        self.transZPublisher = rospy.Publisher('setpoint/trans/z', Float64, queue_size=1)
-        self.angXYPublisher = rospy.Publisher('setpoint/rot/x', Float64, queue_size=1)
-        self.angXZPublisher = rospy.Publisher('setpoint/rot/y', Float64, queue_size=1)
-        self.angYZPublisher = rospy.Publisher('setpoint/rot/z', Float64, queue_size=1)
-        self.togglePublisher = rospy.Publisher('Toggle', Bool, queue_size=1)
+        self.trans_X_publisher = rospy.Publisher('setpoint/trans/x', Float64, queue_size=1)
+        self.trans_Y_publisher = rospy.Publisher('setpoint/trans/y', Float64, queue_size=1)
+        self.trans_Z_publisher = rospy.Publisher('setpoint/trans/z', Float64, queue_size=1)
+        self.rot_X_publisher = rospy.Publisher('setpoint/rot/x', Float64, queue_size=1)
+        self.rot_y_publisher = rospy.Publisher('setpoint/rot/y', Float64, queue_size=1)
+        self.rot_Z_publisher = rospy.Publisher('setpoint/rot/z', Float64, queue_size=1)
+        self.toggle_publisher = rospy.Publisher('Toggle', Bool, queue_size=1)
 
     # Parses all of the xml files with names in the XMLfileNames array and creates an array
     # of axes and buttons to append to the axesTarget and buttonsTarget arrays respectively
     # This is done so that all of the xml files can be read in at the same time and
     # switching between them can be done by switching the index
-    def parseXML(self):
+    def parse_xml(self):
         """
         Parse through all xml files in XMLfileNames to create control scheme
         """
-        for fileName in self.XMLfileNames:
-            tree = etree.parse(fileName)
+        for file_name in self.XML_file_names:
+            tree = etree.parse(file_name)
             root = tree.getroot()
 
             axes = [None]*8
             buttons = [None]*11
 
             for axis in root.findall("axis"):
-                axes[self.axesNames[axis.get("name")]] = axis.get("target")
+                axes[self.axes_names[axis.get("name")]] = axis.get("target")
 
             for button in root.findall("button"):
-                buttons[self.buttonNames[button.get("name")]] = button.get("target")
+                buttons[self.button_names[button.get("name")]] = button.get("target")
 
-            self.axesTarget.append(axes)
-            self.buttonsTarget.append(buttons)
+            self.axes_target.append(axes)
+            self.buttons_target.append(buttons)
 
     # Populates the dictionary of targetControls by matching the incoming values with the designated targets
-    def interpretJoyMsg(self, axes_values, buttons_values):
+    def interpret_joy_msg(self, axes_values, buttons_values):
         """
         Populates the dictionary of targetControls by matching the incoming
         values with the designated targets
@@ -118,44 +119,42 @@ class ControlScheme:
         buttons_values -- Incoming buttons values from 360 controller
         """
         for i in range(len(axes_values)):
-            if(not self.axesTarget[self.index][i] == None):
-                self.targetControls[self.axesTarget[self.index][i]] = axes_values[i]
+            if self.axes_target[self.index][i] is not None:
+                self.target_controls[self.axes_target[self.index][i]] = axes_values[i]
 
         for i in range(len(buttons_values)):
-            if(not self.buttonsTarget[self.index][i] == None):
-                self.targetControls[self.buttonsTarget[self.index][i]] = buttons_values[i]
+            if not self.buttons_target[self.index][i] is not None:
+                self.target_controls[self.buttons_target[self.index][i]] = buttons_values[i]
 
     # changes the index of control schemes
-    def setIndex(self, n):
+    def set_index(self, n):
         """
-	    changes the index of control schemes
-	
-	    Keyword arguements:
-	
-	    n -- the index value of control scheme to be changed to
-	    """
-        if n < len(self.axesTarget) and n < len(self.buttonsTarget) and n >= 0:
+        changes the index of control schemes
+        Keyword arguements:
+
+        n -- the index value of control scheme to be changed to
+        """
+        if 0 <= n < len(self.axes_target) and n < len(self.buttons_target):
             self.index = n
 
-    def sendTargetMessage(self):
+    def send_target_message(self):
         """
-	    publish twist message with linear x,y,z and angular x,y,z
+        publish twist message with linear x,y,z and angular x,y,z
         """
-        self.transXPublisher.publish(self.targetControls["linear_x"])
-        self.transYPublisher.publish(self.targetControls["linear_y"])
-        self.transZPublisher.publish(self.targetControls["linear_z"])
-        self.angXYPublisher.publish(self.targetControls["angular_xy"])
-        self.angXZPublisher.publish(self.targetControls["angular_xz"])
-        self.angYZPublisher.publish(self.targetControls["angular_yz"])
+        self.trans_X_publisher.publish(self.target_controls["trans_x"])
+        self.trans_Y_publisher.publish(self.target_controls["trans_y"])
+        self.trans_Z_publisher.publish(self.target_controls["trans_z"])
+        self.rot_X_publisher.publish(self.target_controls["rot_x"])
+        self.rot_y_publisher.publish(self.target_controls["rot_y"])
+        self.rot_Z_publisher.publish(self.target_controls["rot_z"])
 
+    def send_toggle_message(self):
+        """
+        Publish boolean message indicating the current state of light
+        """
+        if not (self.target_controls["light"] == self.previous_light_button):
 
-    def sendToggleMessage(self):
-	"""
-		Publish boolean message indicating the current state of light
-		"""
-	if not (self.targetControls["light"] == self.previousLightButton):
-
-            if(self.targetControls["light"] == 1):
-                self.currentLight.data = not self.currentLight.data
-                self.togglePublisher.publish(self.currentLight)
-        self.previousLightButton = self.targetControls["light"]
+            if self.target_controls["light"] == 1:
+                self.current_light.data = not self.current_light.data
+                self.toggle_publisher.publish(self.current_light)
+        self.previous_light_button = self.target_controls["light"]
