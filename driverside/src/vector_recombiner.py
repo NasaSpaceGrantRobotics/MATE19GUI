@@ -10,32 +10,32 @@ from geometry_msgs.msg import Twist
 
 
 def receive_trans_x(data):
-    controlEffort.linear.x = data.data
+    control_effort.linear.x = data.data
 
 
 def receive_trans_y(data):
-    controlEffort.linear.y = data.data
+    control_effort.linear.y = data.data
 
 
 def receive_trans_z(data):
-    controlEffort.linear.z = data.data
+    control_effort.linear.z = data.data
 
 
 def receive_rot_x(data):
-    controlEffort.angular.x = data.data
+    control_effort.angular.x = data.data
 
 
 def receive_rot_y(data):
-    controlEffort.angular.y = data.data
+    control_effort.angular.y = data.data
 
 
 def receive_rot_z(data):
-    controlEffort.angular.z = data.data
+    control_effort.angular.z = data.data
 
 
 if __name__ == "__main__":
-    twistPublisher = rospy.Publisher('/control_effort_final', Twist, queue_size=1)
-    controlEffort = Twist()
+    twist_publisher = rospy.Publisher('/control_effort_final', Twist, queue_size=1)
+    control_effort = Twist()
 
     print("test")
     try:
@@ -50,6 +50,6 @@ if __name__ == "__main__":
         rate = rospy.Rate(10)
         while not rospy.is_shutdown():
             rate.sleep()
-            twistPublisher.publish(controlEffort)
+            twist_publisher.publish(control_effort)
     except rospy.ROSInterruptException:
         pass

@@ -42,7 +42,7 @@ class ControlScheme:
 
         self.current_light = Bool()
         self.current_light.data = False
-        self.previous_light_button = 0
+        self.previous_light = 0
 
         self.button_names = {
             "A": 0,
@@ -81,7 +81,7 @@ class ControlScheme:
         self.rot_X_publisher = rospy.Publisher('setpoint/rot/x', Float64, queue_size=1)
         self.rot_y_publisher = rospy.Publisher('setpoint/rot/y', Float64, queue_size=1)
         self.rot_Z_publisher = rospy.Publisher('setpoint/rot/z', Float64, queue_size=1)
-        self.toggle_publisher = rospy.Publisher('Toggle', Bool, queue_size=1)
+        self.toggle_publisher = rospy.Publisher('toggle', Bool, queue_size=1)
 
     # Parses all of the xml files with names in the XMLfileNames array and creates an array
     # of axes and buttons to append to the axesTarget and buttonsTarget arrays respectively
@@ -113,7 +113,7 @@ class ControlScheme:
         Populates the dictionary of targetControls by matching the incoming
         values with the designated targets
 
-        Keyword arguements:
+        Keyword arguments:
 
         axes_values -- Incoming axes values coming from 360 controller
         buttons_values -- Incoming buttons values from 360 controller
@@ -123,14 +123,14 @@ class ControlScheme:
                 self.target_controls[self.axes_target[self.index][i]] = axes_values[i]
 
         for i in range(len(buttons_values)):
-            if not self.buttons_target[self.index][i] is not None:
+            if self.buttons_target[self.index][i] is not None:
                 self.target_controls[self.buttons_target[self.index][i]] = buttons_values[i]
 
     # changes the index of control schemes
     def set_index(self, n):
         """
         changes the index of control schemes
-        Keyword arguements:
+        Keyword arguments:
 
         n -- the index value of control scheme to be changed to
         """
@@ -152,9 +152,9 @@ class ControlScheme:
         """
         Publish boolean message indicating the current state of light
         """
-        if not (self.target_controls["light"] == self.previous_light_button):
+        if not (self.target_controls["light"] == self.previous_light):
 
             if self.target_controls["light"] == 1:
                 self.current_light.data = not self.current_light.data
                 self.toggle_publisher.publish(self.current_light)
-        self.previous_light_button = self.target_controls["light"]
+        self.previous_light = self.target_controls["light"]

@@ -1,11 +1,11 @@
 <launch>
-   <node name="ControlHandler" type="joy_subscriber.py" pkg="driverside" output="screen" args="$(find driverside)/src">
+   <node name="ControlHandler" type="control_handler.py" pkg="driverside" output="screen" args="$(find driverside)/src">
 
    </node>
    <node name="VectorRecombiner" type="vector_recombiner.py" pkg="driverside" output="screen">
 
    </node>
-   <node name="IMUsplitter" type="IMUsplitter.py" pkg="driverside" output="screen">
+   <node name="IMUsplitter" type="imu_splitter.py" pkg="driverside" output="screen">
 
    </node>
    <node name="pid_trans_x" pkg="pid" type="controller" ns="pid" output="screen" >
