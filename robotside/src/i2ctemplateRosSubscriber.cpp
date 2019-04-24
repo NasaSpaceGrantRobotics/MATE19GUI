@@ -11,6 +11,8 @@
 #include <std_msgs/MultiArrayDimension.h>
 #include <std_msgs/UInt16MultiArray.h>
 
+#include <pch.h>
+
 using namespace std;
 
 int addr1 = 0x04;  //primary address //successive i2c devices
@@ -46,14 +48,51 @@ bool readStream(int file_i2c, char buf[]) { //reads a string from the i2c addres
     }
 }
 
-void convertTo3BitHex(int val[], char pwmValsHex[]){
-	for(int i =0; i<val.length(); i++){
-		pwmValsHex.append(hex<<val[i]);
-		if(i<(val.length()-1)){
-			pwmValsHex.append('~');
-		}
-	}
-	
+string intToHexDig(int value) {
+    string cHex;
+    if (value == 15) {
+        cHex = 'f';
+    }
+    else if (value == 14) {
+        cHex = 'e';
+    }
+    else if (value == 13) {
+        cHex = 'd';
+    }
+    else if (value == 12) {
+        cHex = 'c';
+    }
+    else if (value == 11) {
+        cHex = 'b';
+    }
+    else if (value == 10) {
+        cHex = 'a';
+    }
+    else {
+        cHex = to_string(value);
+    }
+
+    return cHex;
+}
+
+string convertTo3BitHex(int numOfBits, int decimal) {
+    string converted;
+    int firstChar = (int)(decimal/ (16 * 16));
+    int firstRemainder = (int)(decimal % (16 * 16));
+    int secondChar = (int)(firstRemainder / (16));
+    int secondRemainder = (int)(firstRemainder % (16));
+    int thirdChar = secondRemainder;
+    string cfirstChar, csecondChar, cthirdChar;
+    cfirstChar = intToHexDig(firstChar);
+    csecondChar = intToHexDig(secondChar);
+    cthirdChar = intToHexDig(thirdChar);
+
+    converted = converted + cfirstChar;
+    converted = converted + csecondChar;
+    converted = converted + cthirdChar;
+    cout << converted << endl;
+    cout << "done"<<endl;
+    return converted;
 }
 
 void arrayCallback(const std_msgs::UInt16MultiArray::ConstPtr& array){
@@ -65,6 +104,19 @@ void arrayCallback(const std_msgs::UInt16MultiArray::ConstPtr& array){
 	}
 	char hexVals[32];
 	//add in the sending of values and the hex conversion here
+	//send data
+	string input;
+	
+	cin>>int input1;
+	string sinput1;
+	for (int i =0; i<8; i++){
+		int valueOf = pwmVals[i];
+		sinput1 = sinput1 + convertTo3BitHex(valueOf);
+		if(i<7){sinput1 = sinput1 + "~";}
+	}
+	writeStream (file_i2c, sinput1);
+    char buf2[32];
+	readStream(file_i2c, buf);
 	return;
 }
 
@@ -76,18 +128,12 @@ int main() {
 	if(ioctl(file_i2c, I2C_SLAVE, addr1) < 0) {
 		printf("\tFailed to acquire bus access and/or talk to slave.\n");
 	}
-	string input;
+
 	
 	ros::init(argc, argv, "pwmSubscriber");
 	ros::NodeHandle n;
 	ros::Subscriber subPWM = n.subscribe("arrayCallback");
 	ros::spinOnce();
-	//send data
-	while(1){
-		cin >> input;
-	        writeStream(file_i2c, input);
-        	char buf[32];
-	        readStream(file_i2c, buf);
-	}
+
 	return 0;
 }
