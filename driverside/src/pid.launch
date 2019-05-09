@@ -1,0 +1,112 @@
+<launch>
+   <node name="ControlHandler" type="control_handler.py" pkg="driverside" output="screen" args="$(find driverside)/src">
+
+   </node>
+   <node name="VectorRecombiner" type="vector_recombiner.py" pkg="driverside" output="screen">
+
+   </node>
+   <node name="IMUsplitter" type="imu_splitter.py" pkg="driverside" output="screen">
+
+   </node>
+   <node name="pid_trans_x" pkg="pid" type="controller" ns="pid" output="screen" >
+      <remap from="control_effort" to="/control_effort/trans/x" />
+      <param name="Kp" value="5.0" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="0.1" />
+      <param name="upper_limit" value="10" />
+      <param name="lower_limit" value="-10" />
+      <param name="windup_limit" value="10" />
+      <param name="cutoff_frequency" value="20" />
+      <param name="max_loop_frequency" value="105.0" />
+      <param name="min_loop_frequency" value="95.0" />
+      <param name="setpoint_topic" value="/setpoint/trans/x"/>
+      <param name="topic_from_controller" value="/control_effort/trans/x"/>
+      <param name="topic_from_plant" value="/state/trans/x"/>
+      <param name="queue_size" value="1" />
+   </node>
+
+   <node name="pid_trans_y" pkg="pid" type="controller" ns="pid" output="screen" >
+      <remap from="control_effort" to="/control_effort/trans/y" />
+      <param name="Kp" value="5.0" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="0.1" />
+      <param name="upper_limit" value="10" />
+      <param name="lower_limit" value="-10" />
+      <param name="windup_limit" value="10" />
+      <param name="cutoff_frequency" value="20" />
+      <param name="max_loop_frequency" value="105.0" />
+      <param name="min_loop_frequency" value="95.0" />
+      <param name="setpoint_topic" value="/setpoint/trans/y"/>
+      <param name="topic_from_controller" value="/control_effort/trans/y"/>
+      <param name="topic_from_plant" value="/state/trans/y"/>
+      <param name="queue_size" value="1" />
+   </node>
+
+   <node name="pid_trans_z" pkg="pid" type="controller" ns="pid" output="screen" >
+      <remap from="control_effort" to="/control_effort/trans/z" />
+      <param name="Kp" value="5.0" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="0.1" />
+      <param name="upper_limit" value="10" />
+      <param name="lower_limit" value="-10" />
+      <param name="windup_limit" value="10" />
+      <param name="cutoff_frequency" value="20" />
+      <param name="max_loop_frequency" value="105.0" />
+      <param name="min_loop_frequency" value="95.0" />
+      <param name="setpoint_topic" value="/setpoint/trans/z"/>
+      <param name="topic_from_controller" value="/control_effort/trans/z"/>
+      <param name="topic_from_plant" value="/state/trans/z"/>
+      <param name="queue_size" value="1" />
+     </node>
+
+   <node name="pid_rot_x" pkg="pid" type="controller" ns="pid" output="screen" >
+      <remap from="control_effort" to="/control_effort/rot/x" />
+      <param name="Kp" value="5.0" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="0.1" />
+      <param name="upper_limit" value="10" />
+      <param name="lower_limit" value="-10" />
+      <param name="windup_limit" value="10" />
+      <param name="cutoff_frequency" value="20" />
+      <param name="max_loop_frequency" value="105.0" />
+      <param name="min_loop_frequency" value="95.0" />
+      <param name="setpoint_topic" value="/setpoint/rot/x"/>
+      <param name="topic_from_controller" value="/control_effort/rot/x"/>
+      <param name="topic_from_plant" value="/state/rot/x"/>
+      <param name="queue_size" value="1" />
+   </node>
+
+   <node name="pid_rot_y" pkg="pid" type="controller" ns="pid" output="screen" >
+      <remap from="control_effort" to="/control_effort/rot/y" />
+      <param name="Kp" value="5.0" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="0.1" />
+      <param name="upper_limit" value="10" />
+      <param name="lower_limit" value="-10" />
+      <param name="windup_limit" value="10" />
+      <param name="cutoff_frequency" value="20" />
+      <param name="max_loop_frequency" value="105.0" />
+      <param name="min_loop_frequency" value="95.0" />
+      <param name="setpoint_topic" value="/setpoint/rot/y"/>
+      <param name="topic_from_controller" value="/control_effort/rot/y"/>
+      <param name="topic_from_plant" value="/state/rot/y"/>
+      <param name="queue_size" value="1" />
+   </node>
+
+   <node name="pid_rot_z" pkg="pid" type="controller" ns="pid" output="screen" >
+      <remap from="control_effort" to="/control_effort/rot/z" />
+      <param name="Kp" value="5.0" />
+      <param name="Ki" value="0.0" />
+      <param name="Kd" value="0.1" />
+      <param name="upper_limit" value="10" />
+      <param name="lower_limit" value="-10" />
+      <param name="windup_limit" value="10" />
+      <param name="cutoff_frequency" value="20" />
+      <param name="max_loop_frequency" value="105.0" />
+      <param name="min_loop_frequency" value="95.0" />
+      <param name="setpoint_topic" value="/setpoint/rot/z"/>
+      <param name="topic_from_controller" value="/control_effort/rot/z"/>
+      <param name="topic_from_plant" value="/state/rot/z"/>
+      <param name="queue_size" value="1" />
+   </node>
+</launch>

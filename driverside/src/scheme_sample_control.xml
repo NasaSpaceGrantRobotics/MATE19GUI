@@ -24,9 +24,9 @@
 -->
 
 <ControlScheme>
-    <button target="A" name="A"/>
+    <button target="light" name="A"/>
     <button target="switch" name="B"/>
-    <button target="light" name="X"/>
+    <button target="X" name="X"/>
     <button target="Y" name="Y"/>
     <button target="LB" name="LB"/>
     <button target="RB" name="RB"/>
@@ -35,12 +35,12 @@
     <button target="LeftStick" name = "LeftStick"/>
     <button target="RightStick" name = "RightStick"/>
 
-    <axis target="linear_x" name="LeftStickX"/>
-    <axis target="linear_y" name="LeftStickY"/>
-    <axis target="linear_z" name="LeftTrigger"/>
-    <axis target="angular_x" name="RightStickX"/>
-    <axis target="angular_y" name="RightStickY"/>
-    <axis target="angular_z" name="RightTrigger"/>
+    <axis target="trans_x" name="LeftStickX"/>
+    <axis target="trans_y" name="LeftStickY"/>
+    <axis target="trans_z" name="LeftTrigger"/>
+    <axis target="rot_x" name="RightStickX"/>
+    <axis target="rot_y" name="RightStickY"/>
+    <axis target="rot_z" name="RightTrigger"/>
     <axis target="LR Dpad" name="DpadX"/>
     <axis target="UD Dpad" name="DpadY"/>
 </ControlScheme>
