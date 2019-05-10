@@ -16,19 +16,6 @@ class GUI(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        # setup menubar
-        menu_bar = QMenuBar(self)
-
-        # setup file menu and all its items
-        file_menu = menu_bar.addMenu('&File')
-
-        # setup debug menu and all its items
-        debug_menu = menu_bar.addMenu('&Debug')
-
-        # setup controls menu and all its items
-        controls_menu = menu_bar.addMenu('&Controls')
-
-        # setup Video object for camera feeds
         self.vid = Video()
 
         self.layout = QVBoxLayout()
@@ -82,7 +69,7 @@ def main():
     gui = GUI()
 
     # define subscribed topics, data types, and callback functions
-    rospy.Subscriber('vid_feed', Image, gui.vid.vid_callback)
+    rospy.Subscriber('proc_vid_feed', Image, gui.vid.vid_callback)
 
     sys.exit(app.exec_())
 

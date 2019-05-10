@@ -19,19 +19,10 @@ class ControlPanel(QWidget):
     def __init__(self):
         super(ControlPanel, self).__init__()
         self.icons = []
-        self.schemes = ['Scheme1', 'Scheme2']
-        icons_path = "/home/nasgrds/catkin_ws/src/MATE19/driverside/src/icons/*.png"
+        self.schemes = []
+        self.icons_path = "/home/nasgrds/catkin_ws/src/MATE19/driverside/src/icons/*.png"
 
-        # load png files into an array
-        self.icon_files = glob.glob(icons_path)
-
-        # extract file name as string from each file path and create QPixmap from each file, saving them as a tuple
-        for filepath in self.icon_files:
-            head, tail = os.path.split(filepath)    # split file name from file path
-            name = os.path.splitext(tail)[0]    # split tag from file
-            pxmp = QPixmap(filepath).scaled(QSize(20, 20), Qt.KeepAspectRatioByExpanding)
-            name_and_icon = (name, pxmp)
-            self.icons.append(name_and_icon)
+        self.load_icons()
         """
         # load scheme xml files into an array
         self.scheme_files = glob.glob('../inputProc/control_schemes/scheme_*.xml')  # path may change depending on location of folder
@@ -40,7 +31,8 @@ class ControlPanel(QWidget):
         for filepath in self.scheme_files:
             head, tail = os.path.split(filepath)    # split file name from file path 
             name = os.path.splitext(tail)[0]    # split tag from file 
-            self.schemes.append(name)
+            name_and_scheme = (name, filepath)
+            self.schemes.append(name_and_scheme)
         """
         # initialize ROS node
         self.pub = rospy.Publisher('control_scheme_index', Int8, queue_size=10)
@@ -48,6 +40,18 @@ class ControlPanel(QWidget):
 
         self.init_ui()
         self.load_schemes()
+
+    def load_icons(self):
+        # load png files into an array
+        self.icon_files = glob.glob(self.icons_path)
+
+        # extract file name as string from each file path and create QPixmap from each file, saving them as a tuple
+        for filepath in self.icon_files:
+            head, tail = os.path.split(filepath)  # split file name from file path
+            name = os.path.splitext(tail)[0]  # split tag from file
+            pxmp = QPixmap(filepath).scaled(QSize(20, 20), Qt.KeepAspectRatioByExpanding)
+            name_and_icon = (name, pxmp)
+            self.icons.append(name_and_icon)
 
     def init_ui(self):
         # create widgets for each view
@@ -74,25 +78,24 @@ class ControlPanel(QWidget):
     def load_schemes(self):
         # add QComboBox option for each scheme
         for scheme_name in self.schemes:
-            self.scheme_selector.addItem(scheme_name)
+            self.scheme_selector.addItem(scheme_name[0])
         """
-        list_idx = 0
-        for filename in self._scheme_files:
-            tree = etree.parse(filename)
+            tree = etree.parse(self.scheme_files[index])
             root = tree.getroot()
 
             self._scheme_list.append(ButtonTargetDict())
 
             for axis in root.findall('axis'):
-                self._scheme_list[list_idx].button_targets[axis.get('name')] = axis.get('target')
+                self.scheme_list[list_idx].button_targets[axis.get('name')] = axis.get('target')
 
             for button in root.findall('button'):
-                self._scheme_list[list_idx].button_targets[button.get('name')] = button.get('target')
+                self.scheme_list[list_idx].button_targets[button.get('name')] = button.get('target')
 
             print self._scheme_list[list_idx]  # for debugging
-            list_idx = list_idx + 1
         """
     def change_scheme(self, e):
+        # self.list_view.set_scheme(self.schemes[e])
+        # self.map_view.set_scheme(self.schemes[e])
         self.pub.publish(e)
         rospy.loginfo("Index published: %d", e)
 
@@ -178,30 +181,6 @@ class IconAndLabel(QWidget):
             self._layout.addWidget(self._icon)
             self._layout.addWidget(self._label)
         self.setLayout(self._layout)
-
-
-class ButtonTargetDict:
-    def __init__(self):
-        button_targets = {
-            'A': '',
-            'B': '',
-            'X': '',
-            'Y': '',
-            'LB': '',
-            'RB': '',
-            'Back': '',
-            'Start': '',
-            'LeftStick': '',
-            'RightStick': '',
-            'LeftStickX': '',
-            'LeftStickY': '',
-            'LeftTrigger': '',
-            'RightStickX': '',
-            'RightStickY': '',
-            'RightTrigger': '',
-            'DpadX': '',
-            'DpadY': ''
-        }
 
 
 def main():

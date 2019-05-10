@@ -8,10 +8,10 @@ from sensor_msgs.msg import Image
 
 def main():
     bridge = CvBridge()
-    pub = rospy.Publisher('vid_feed', Image, queue_size=25)
+    pub = rospy.Publisher('camera', Image, queue_size=25)
     rospy.init_node('VidPub', anonymous=True)
     cap = cv2.VideoCapture(0)
-    while cap.isOpened():
+    while cap.isOpened() and not rospy.is_shutdown():
         ret, frame = cap.read()
         pub.publish(bridge.cv2_to_imgmsg(frame))
         if cv2.waitKey(1) == 27:
