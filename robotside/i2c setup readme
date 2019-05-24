@@ -1,0 +1,31 @@
+STEP I:
+  sudo apt-get install libi2c-dev i2c-tools
+STEP II:
+  sudo i2cdetect -y -r 1
+  
+  should output...
+  0 1 2 3 4 5 6 7 8 9 a b c d e f
+00: — — — — — — — — — — — — —
+10: — — — — — — — — — — — — — — — —
+20: — — — — — — — — — — — — — — — —
+30: — — — — — — — — — — — — — — — —
+40: — — — — — — — — — — — — — — — —
+50: — — — — — — — — — — — — — — — —
+60: — — — — — — — — — — — — — — — —
+70: — — — — — — — — 
+
+STEP III:
+  connect the arduino to the nvidia with the provided arduino script and rerun 
+  sudo i2cdetect -y -r 1
+  
+  should now output
+  0 1 2 3 4 5 6 7 8 9 a b c d e f
+00: — — — 04 — — — — — — — — —
+10: — — — — — — — — — — — — — — — —
+20: — — — — — — — — — — — — — — — —
+30: — — — — — — — — — — — — — — — —
+40: — — — — — — — — — — — — — — — —
+50: — — — — — — — — — — — — — — — —
+60: — — — — — — — — — — — — — — — —
+70: — — — — — — — — 
+
